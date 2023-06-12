@@ -1,7 +1,9 @@
 import { AppBaseEntity } from 'src/shared/appBaseEntity';
-import { Column, Unique } from 'typeorm';
+import { Column, Entity, Unique } from 'typeorm';
 
-@Unique(['username', 'email'])
+@Entity()
+@Unique(['username'])
+@Unique(['email'])
 export class User extends AppBaseEntity {
   @Column()
   username: string;
