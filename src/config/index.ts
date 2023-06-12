@@ -18,4 +18,7 @@ export const config = {
     ssl: Boolean(JSON.parse(env('DATABASE_SSL'))),
     synchronize: Boolean(JSON.parse(env('DATABASE_SYNCHRONIZE'))),
   },
+  jwt: {
+    secret: env('JWT_SECRET'),
+  },
 };
