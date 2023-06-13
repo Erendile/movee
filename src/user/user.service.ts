@@ -12,14 +12,6 @@ export class UserService {
     await this.userRepository.signUp(signUpDto);
   }
 
-  async findByEmail(email: string): Promise<User> {
-    const user = await this.userRepository.findOneBy({ email });
-
-    if (!user) throw new NotFoundException('user not found');
-
-    return user;
-  }
-
   async findByUsername(username: string): Promise<User> {
     const user = await this.userRepository.findOneBy({ username });
 
@@ -30,9 +22,9 @@ export class UserService {
 
   async validateUserPassword(signInDto: SignInDto) {
     const { email, password } = signInDto;
-    const user = await this.findByEmail(email);
+    const user = await this.userRepository.findOneBy({ email });
 
-    if (await user.validatePassword(password)) {
+    if (user && (await user.validatePassword(password))) {
       return user.username;
     } else {
       return null;
