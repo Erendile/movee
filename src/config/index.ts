@@ -10,6 +10,7 @@ const env = (key: string) => process.env[key];
 
 export const config = {
   port: Number(env('PORT')),
+  corsOrigin: env('CORS_ORIGIN'),
   database: {
     name: env('DATABASE_NAME'),
     password: env('DATABASE_PASSWORD'),

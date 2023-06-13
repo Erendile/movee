@@ -6,6 +6,9 @@ import { config } from './config';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const port = config.port;
+  const origin = config.corsOrigin;
+
+  app.enableCors({ credentials: true, origin });
 
   app.useGlobalPipes(
     new ValidationPipe({
