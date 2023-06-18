@@ -52,7 +52,7 @@ export class EntryService {
     };
   }
 
-  async createEntry(
+  async create(
     createEntryDto: CreateEntryDto,
     createdBy: User,
   ): Promise<Entry> {

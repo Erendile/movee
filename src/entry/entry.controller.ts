@@ -35,11 +35,11 @@ export class EntryController {
 
   @Post()
   @UseGuards(JwtGuard)
-  async createEntry(
+  async create(
     @Body() createEntryDto: CreateEntryDto,
     @GetUser() createdBy: User,
   ): Promise<Entry> {
-    return await this.entryService.createEntry(createEntryDto, createdBy);
+    return await this.entryService.create(createEntryDto, createdBy);
   }
 
   @Delete('/:id')
@@ -57,7 +57,7 @@ export class EntryController {
     @Param('id') id: string,
     @Body() updateEntryDto: UpdateEntryDto,
     @GetUser() createdBy: User,
-  ) {
+  ): Promise<Entry> {
     return await this.entryService.update(id, updateEntryDto, createdBy);
   }
 

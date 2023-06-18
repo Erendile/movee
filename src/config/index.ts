@@ -1,9 +1,13 @@
 import * as dotenv from 'dotenv';
 
-const envFound = dotenv.config({ path: '.env.local' });
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-if (envFound.error) {
-  throw new Error("Couldn't find .env.local file");
+if (process.env.NODE_ENV === 'development') {
+  const envFound = dotenv.config({ path: '.env.local' });
+
+  if (envFound.error) {
+    throw new Error("Couldn't find .env.local file");
+  }
 }
 
 const env = (key: string) => process.env[key];
