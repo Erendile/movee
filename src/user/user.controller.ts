@@ -22,4 +22,34 @@ export class UserController {
     entryQuery.createdById = createdBy.id;
     return await this.entryService.getAll(entryQuery, paginationQuery);
   }
+
+  @Get('/voted-entries')
+  @UseGuards(JwtGuard)
+  async getVotedEntries(
+    @Query() entryQuery: EntryQuery,
+    @Query() paginationQuery: PaginationQuery,
+    @GetUser() createdBy: User,
+  ): Promise<PaginationDto<Entry>> {
+    entryQuery.createdById = createdBy.id;
+    return await this.entryService.getEntriesByVote(
+      entryQuery,
+      paginationQuery,
+      true,
+    );
+  }
+
+  @Get('/unvoted-entries')
+  @UseGuards(JwtGuard)
+  async getUnvotedEntries(
+    @Query() entryQuery: EntryQuery,
+    @Query() paginationQuery: PaginationQuery,
+    @GetUser() createdBy: User,
+  ): Promise<PaginationDto<Entry>> {
+    entryQuery.createdById = createdBy.id;
+    return await this.entryService.getEntriesByVote(
+      entryQuery,
+      paginationQuery,
+      false,
+    );
+  }
 }

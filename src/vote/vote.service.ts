@@ -35,6 +35,15 @@ export class VoteService {
     }
   }
 
+  getVoteSubQuery(): string {
+    const voteSubQuery = this.voteRepository
+      .createQueryBuilder('vote')
+      .select('vote.entryId')
+      .getSql();
+
+    return voteSubQuery;
+  }
+
   private async getByEntryAndCreated(
     entryId: string,
     createdById: string,
