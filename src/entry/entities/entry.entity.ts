@@ -14,7 +14,10 @@ export class Entry extends AppBaseEntity {
   @Column()
   createdById: string;
 
-  @ManyToOne(() => User, (user) => user.entries, { eager: false })
+  @ManyToOne(() => User, (user) => user.entries, {
+    eager: false,
+    onDelete: 'CASCADE',
+  })
   createdBy: User;
 
   @OneToMany(() => Vote, (vote) => vote.entry, { eager: true })
