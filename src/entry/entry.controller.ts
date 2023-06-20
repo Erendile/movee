@@ -17,6 +17,7 @@ import { User } from 'src/user/entities/user.entity';
 import { CreateVoteDto } from 'src/vote/dto/create-vote.dto';
 import { CreateEntryDto } from './dto/create-entry.dto';
 import { EntryQuery } from './dto/entry-query.dto';
+import { EntryResponseDto } from './dto/entry-response.dto';
 import { UpdateEntryDto } from './dto/update-entry.dto';
 import { Entry } from './entities/entry.entity';
 import { EntryService } from './entry.service';
@@ -29,7 +30,7 @@ export class EntryController {
   async getAll(
     @Query() entryQuery: EntryQuery,
     @Query() paginationQuery: PaginationQuery,
-  ): Promise<PaginationDto<Entry>> {
+  ): Promise<PaginationDto<EntryResponseDto>> {
     return await this.entryService.getAll(entryQuery, paginationQuery);
   }
 

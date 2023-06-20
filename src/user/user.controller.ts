@@ -2,7 +2,7 @@ import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { EntryQuery } from 'src/entry/dto/entry-query.dto';
-import { Entry } from 'src/entry/entities/entry.entity';
+import { EntryResponseDto } from 'src/entry/dto/entry-response.dto';
 import { EntryService } from 'src/entry/entry.service';
 import { PaginationDto } from 'src/shared/pagination/pagination.dto';
 import { PaginationQuery } from 'src/shared/pagination/pagination.query';
@@ -18,7 +18,7 @@ export class UserController {
     @Query() entryQuery: EntryQuery,
     @Query() paginationQuery: PaginationQuery,
     @GetUser() createdBy: User,
-  ): Promise<PaginationDto<Entry>> {
+  ): Promise<PaginationDto<EntryResponseDto>> {
     entryQuery.createdById = createdBy.id;
     return await this.entryService.getAll(entryQuery, paginationQuery);
   }
@@ -29,7 +29,7 @@ export class UserController {
     @Query() entryQuery: EntryQuery,
     @Query() paginationQuery: PaginationQuery,
     @GetUser() createdBy: User,
-  ): Promise<PaginationDto<Entry>> {
+  ): Promise<PaginationDto<EntryResponseDto>> {
     entryQuery.createdById = createdBy.id;
     return await this.entryService.getEntriesByVote(
       entryQuery,
@@ -44,7 +44,7 @@ export class UserController {
     @Query() entryQuery: EntryQuery,
     @Query() paginationQuery: PaginationQuery,
     @GetUser() createdBy: User,
-  ): Promise<PaginationDto<Entry>> {
+  ): Promise<PaginationDto<EntryResponseDto>> {
     entryQuery.createdById = createdBy.id;
     return await this.entryService.getEntriesByVote(
       entryQuery,

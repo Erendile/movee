@@ -3,11 +3,11 @@ import { PaginationDto } from 'src/shared/pagination/pagination.dto';
 import { PaginationQuery } from 'src/shared/pagination/pagination.query';
 import { User } from 'src/user/entities/user.entity';
 import { CreateVoteDto } from 'src/vote/dto/create-vote.dto';
-import { VoteRepository } from 'src/vote/vote.repository';
 import { VoteService } from 'src/vote/vote.service';
 import { ILike } from 'typeorm';
 import { CreateEntryDto } from './dto/create-entry.dto';
 import { EntryQuery } from './dto/entry-query.dto';
+import { EntryResponseDto } from './dto/entry-response.dto';
 import { UpdateEntryDto } from './dto/update-entry.dto';
 import { Entry } from './entities/entry.entity';
 import { EntryRepository } from './entry.repository';
@@ -17,13 +17,12 @@ export class EntryService {
   constructor(
     private readonly entryRepository: EntryRepository,
     private readonly voteService: VoteService,
-    private readonly voteRepository: VoteRepository,
   ) {}
 
   async getAll(
     entryQuery: EntryQuery,
     paginationQuery: PaginationQuery,
-  ): Promise<PaginationDto<Entry>> {
+  ): Promise<PaginationDto<EntryResponseDto>> {
     const { page, pageSize } = paginationQuery;
     const skip = (page - 1) * pageSize;
 
@@ -43,8 +42,14 @@ export class EntryService {
 
     const pageCount = Math.ceil(count / pageSize);
 
+    const entries = items.map((item) => {
+      const entryResponse = new EntryResponseDto();
+      entryResponse.entryMapper(item);
+      return entryResponse;
+    });
+
     return {
-      items,
+      items: entries,
       total: count,
       page,
       pageSize,
@@ -58,7 +63,7 @@ export class EntryService {
     entryQuery: EntryQuery,
     paginationQuery: PaginationQuery,
     includeVoted: boolean,
-  ): Promise<PaginationDto<Entry>> {
+  ): Promise<PaginationDto<EntryResponseDto>> {
     const { page, pageSize } = paginationQuery;
     const skip = (page - 1) * pageSize;
 
@@ -83,10 +88,16 @@ export class EntryService {
 
     const [items, count] = await entryQueryBuilder.getManyAndCount();
 
+    const entries = items.map((item) => {
+      const entryResponse = new EntryResponseDto();
+      entryResponse.entryMapper(item);
+      return entryResponse;
+    });
+
     const pageCount = Math.ceil(count / pageSize);
 
     return {
-      items,
+      items: entries,
       total: count,
       page,
       pageSize,
