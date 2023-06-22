@@ -41,6 +41,8 @@ export class AuthController {
   @Get('/me')
   @UseGuards(JwtGuard)
   getMe(@GetUser() user: User): User {
+    delete user.votes;
+    delete user.entries;
     return user;
   }
 }
