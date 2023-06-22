@@ -1,4 +1,11 @@
-import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { User } from 'src/user/entities/user.entity';
 import { AuthService } from './auth.service';
 import { GetUser } from './decorators/get-user.decorator';
@@ -29,5 +36,11 @@ export class AuthController {
     @Body() updatePasswordDto: UpdatePasswordDto,
   ): Promise<void> {
     await this.authService.updatePassword(user, updatePasswordDto);
+  }
+
+  @Get('/me')
+  @UseGuards(JwtGuard)
+  getMe(@GetUser() user: User): User {
+    return user;
   }
 }
