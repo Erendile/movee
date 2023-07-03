@@ -1,0 +1,38 @@
+version: '3.9'
+
+services:
+  postgresql:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: '5326970'
+      POSTGRES_DB: 'movee'
+      PGDATA: /data/postgres
+    volumes:
+      - postgresql:/data/postgres
+    ports:
+      - '5432:5432'
+
+  api:
+    build: .
+    ports:
+      - '8080:8080'
+    environment:
+      PORT: 8080
+      CORS_ORIGIN: 'http://localhost:3000'
+      DATABASE_NAME: movee
+      DATABASE_PASSWORD: '5326970'
+      DATABASE_HOST: postgresql
+      DATABASE_USER: postgres
+      DATABASE_SSL: 'false'
+      DATABASE_SYNCHRONIZE: 'false'
+      JWT_SECRET: access-secret
+      NODE_ENV: production
+    depends_on:
+      - postgresql
+    entrypoint: ['/app/wait-for.sh', 'postgresql:5432', '--', '/app/start.sh']
+    command: ["node", "./dist/main.js"]
+
+volumes:
+  postgresql: {}
